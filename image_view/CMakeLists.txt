@@ -18,20 +18,26 @@ if (PKG_CONFIG_FOUND AND UNIX AND NOT APPLE)
    endif(GTK_FOUND)
 endif(PKG_CONFIG_FOUND AND UNIX AND NOT APPLE)
 
+find_package(OpenCV 2.3.1 REQUIRED)
+
 # Nodelet library
 rosbuild_add_library(image_view src/nodelets/image_nodelet.cpp src/nodelets/disparity_nodelet.cpp src/nodelets/window_thread.cpp)
-target_link_libraries(image_view ${GTK_LIBRARIES})
+target_link_libraries(image_view ${GTK_LIBRARIES} ${OpenCV_LIBS})
 
 # Image viewers
 rosbuild_add_executable(image_view_exe src/nodes/image_view.cpp)
+target_link_libraries(image_view_exe ${OpenCV_LIBS})
 SET_TARGET_PROPERTIES(image_view_exe PROPERTIES OUTPUT_NAME image_view)
 
 rosbuild_add_executable(disparity_view src/nodes/disparity_view.cpp)
+target_link_libraries(disparity_view ${OpenCV_LIBS}) 
 
 rosbuild_add_executable(stereo_view src/nodes/stereo_view.cpp)
-target_link_libraries(stereo_view ${GTK_LIBRARIES})
+target_link_libraries(stereo_view ${GTK_LIBRARIES} ${OpenCV_LIBS})
 
 # Extra tools (unstable)
 rosbuild_add_executable(extract_images src/nodes/extract_images.cpp)
+target_link_libraries(extract_images ${OpenCV_LIBS})
 
 rosbuild_add_executable(image_saver src/nodes/image_saver.cpp)
+target_link_libraries(image_saver ${OpenCV_LIBS})
